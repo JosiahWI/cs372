@@ -6,7 +6,7 @@
 
 namespace {
   std::array<std::array<dig_t,7>,10> codes{
-    std::array<dig_t,7>{ LOW,  LOW,  LOW,  LOW,  LOW,  LOW,  LOW},
+    std::array<dig_t,7>{ LOW, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH},
     std::array<dig_t,7>{ LOW,  LOW,  LOW, HIGH,  LOW,  LOW, HIGH},
     std::array<dig_t,7>{HIGH,  LOW, HIGH, HIGH, HIGH, HIGH,  LOW},
     std::array<dig_t,7>{HIGH,  LOW, HIGH, HIGH,  LOW, HIGH, HIGH},
