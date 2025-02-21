@@ -10,7 +10,7 @@ CS372Debounce::CS372Debounce(pin_t pin) : button_pin{pin}
 void
 CS372Debounce::update()
 {
-  int const pin_state{digitalRead(this->button_pin)};
+  dig_t const pin_state{digitalRead(this->button_pin)};
 
   if (DOWN == this->button_state) {
     if (DOWN == pin_state) {
@@ -28,7 +28,7 @@ CS372Debounce::update()
     } else {
       this->count = 0;
     }
-    if (count > threshold) {
+    if (this->count > this->threshold) {
       this->button_state    = DOWN;
       this->count           = 0;
       this->press_available = true;

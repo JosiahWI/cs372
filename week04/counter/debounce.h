@@ -14,7 +14,7 @@ private:
   pin_t button_pin;
   int   count{0};
 
-  enum ButtonState {
+  enum ButtonState : dig_t {
     UP   = HIGH,
     DOWN = LOW,
     MAX_STATE,
