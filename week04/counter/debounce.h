@@ -22,7 +22,7 @@ private:
 
   bool press_available{false};
 
-  static constexpr int threshold{10000};
+  static constexpr int threshold{100};
 };
 
 #endif // DEBOUNCE_H_INCLUDED
