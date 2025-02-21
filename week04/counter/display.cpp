@@ -6,16 +6,16 @@
 
 namespace {
   std::array<std::array<dig_t,7>,10> codes{
-    std::array<dig_t,7>{ LOW,  LOW,  LOW,  LOW,  LOW,  LOW,  LOW},
-    std::array<dig_t,7>{ LOW,  LOW,  LOW, HIGH,  LOW,  LOW, HIGH},
-    std::array<dig_t,7>{HIGH,  LOW, HIGH, HIGH, HIGH, HIGH,  LOW},
-    std::array<dig_t,7>{HIGH,  LOW, HIGH, HIGH,  LOW, HIGH, HIGH},
-    std::array<dig_t,7>{HIGH, HIGH,  LOW, HIGH,  LOW,  LOW, HIGH},
-    std::array<dig_t,7>{HIGH, HIGH, HIGH,  LOW,  LOW, HIGH, HIGH},
-    std::array<dig_t,7>{HIGH, HIGH, HIGH,  LOW, HIGH, HIGH, HIGH},
-    std::array<dig_t,7>{ LOW,  LOW, HIGH, HIGH,  LOW,  LOW, HIGH},
     std::array<dig_t,7>{HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH},
-    std::array<dig_t,7>{HIGH, HIGH, HIGH, HIGH,  LOW, HIGH, HIGH},
+    std::array<dig_t,7>{HIGH, HIGH, HIGH,  LOW, HIGH, HIGH,  LOW},
+    std::array<dig_t,7>{ LOW, HIGH,  LOW,  LOW,  LOW,  LOW, HIGH},
+    std::array<dig_t,7>{ LOW, HIGH,  LOW,  LOW, HIGH,  LOW,  LOW},
+    std::array<dig_t,7>{ LOW,  LOW, HIGH,  LOW, HIGH, HIGH,  LOW},
+    std::array<dig_t,7>{ LOW,  LOW,  LOW, HIGH, HIGH,  LOW,  LOW},
+    std::array<dig_t,7>{ LOW,  LOW,  LOW, HIGH,  LOW,  LOW,  LOW},
+    std::array<dig_t,7>{HIGH, HIGH,  LOW,  LOW, HIGH, HIGH,  LOW},
+    std::array<dig_t,7>{ LOW,  LOW,  LOW,  LOW,  LOW,  LOW,  LOW},
+    std::array<dig_t,7>{ LOW,  LOW,  LOW,  LOW, HIGH,  LOW,  LOW},
   };
 } // end anonymous namespace
 
@@ -23,10 +23,7 @@ CS372SevenSegment::CS372SevenSegment(pin_t const* pins)
 {
   std::memcpy(this->display_pins.data(), pins,
               this->display_pins.size() * sizeof(pin_t));
-  for (pin_t pin : this->display_pins) {
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
-  }
+  this->update(0);
 }
 
 void
