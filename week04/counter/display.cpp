@@ -25,6 +25,7 @@ CS372SevenSegment::CS372SevenSegment(pin_t const* pins)
               this->display_pins.size() * sizeof(pin_t));
   for (pin_t pin : this->display_pins) {
     pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
   }
 }
 
