@@ -18,7 +18,7 @@ private:
     UP   = HIGH,
     DOWN = LOW,
     MAX_STATE,
-  } button_state;
+  } button_state{DOWN};
 
   bool press_available{false};
 
