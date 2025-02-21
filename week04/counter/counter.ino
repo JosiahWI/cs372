@@ -8,7 +8,7 @@
 static CS372Debounce* get_g_button1();
 
 namespace {
-  constexpr pin_t BUTTON1_PIN{2};
+  constexpr pin_t BUTTON1_PIN{14};
   constexpr std::array<pin_t, 7> display_pins{23, 22, 18, 17, 21, 20, 19};
 } // end anonymous namespace
 
