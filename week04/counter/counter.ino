@@ -13,7 +13,7 @@ static CS372SevenSegment* get_g_display();
 namespace {
   constexpr pin_t BUTTON1_PIN{14};
   constexpr pin_t BUTTON2_PIN{15};
-  constexpr pin_t DISPLAY_PINS[]{23, 22, 18, 17, 21, 20, 19};
+  constexpr pin_t DISPLAY_PINS[]{23, 22, 17, 18, 21, 20, 19};
 } // end anonymous namespace
 
 
@@ -59,7 +59,7 @@ loop()
 
   auto* button2{get_g_button2()};
   button2->update();
-  if (button2->pressed() && n > 1) {
+  if (button2->pressed() && n > 0) {
     get_g_display()->update(--n);
   }
 }

@@ -15,7 +15,7 @@ namespace {
     std::array<dig_t,7>{HIGH, HIGH, HIGH,  LOW, HIGH, HIGH, HIGH},
     std::array<dig_t,7>{ LOW,  LOW, HIGH, HIGH,  LOW,  LOW, HIGH},
     std::array<dig_t,7>{HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH},
-    std::array<dig_t,7>{HIGH, HIGH, HIGH, HIGH, HIGH,  LOW, HIGH},
+    std::array<dig_t,7>{HIGH, HIGH, HIGH, HIGH,  LOW, HIGH, HIGH},
   };
 } // end anonymous namespace
 
