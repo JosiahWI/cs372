@@ -29,6 +29,10 @@ CS372SevenSegment::CS372SevenSegment(pin_t const* pins)
 void
 CS372SevenSegment::update(int n)
 {
+  if (n < 0 || n > 9) {
+    return;
+  }
+
   for (int i{0}; i < 7; ++i) {
     pinMode(this->display_pins[i], codes[n][i]);
   }
