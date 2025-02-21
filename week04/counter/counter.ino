@@ -30,9 +30,11 @@ loop()
   button->update();
   if (button->pressed()) {
     digitalWrite(LED_BUILTIN, HIGH);
+  } else {
+    digitalWrite(LED_BUILTIN, LOW);
   }
   for (pin_t pin : display_pins) {
-    digitalWrite(pin, HIGH);
+    digitalWrite(pin, LOW);
   }
 }
 
