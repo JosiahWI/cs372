@@ -9,6 +9,8 @@
 static CS372Debounce*     get_g_button1();
 static CS372Debounce*     get_g_button2();
 static CS372SevenSegment* get_g_display();
+static void               loop_motor();
+static void               step_motor_state();
 
 namespace {
   constexpr pin_t BUTTON1_PIN{14};
@@ -17,6 +19,7 @@ namespace {
   constexpr pin_t MOTOR_ENABLE_PIN{12};
   constexpr pin_t MOTOR_IN1_PIN{10};
   constexpr pin_t MOTOR_IN2_PIN{11};
+  constexpr int   DELAY{10};
 } // end anonymous namespace
 
 
@@ -57,22 +60,40 @@ get_g_display()
 void
 loop()
 {
-  static int n{0};
-  static int dir{0};
-
+  static int _run{0};
   auto* button1{get_g_button1()};
   button1->update();
   if (button1->pressed()) {
-    digitalWrite(MOTOR_ENABLE_PIN, HIGH);
+    _run = 1;
   }
 
   auto* button2{get_g_button2()};
   button2->update();
   if (button2->pressed()) {
-    digitalWrite(MOTOR_ENABLE_PIN, LOW);
+    _run = 0;
   }
 
-  get_g_display()->update(n / 18);
+  if (_run) {
+    loop_motor();
+  }
+}
+
+void
+loop_motor()
+{
+  static auto last_update{millis()};
+
+  if (millis() - last_update > DELAY) {
+    step_motor_state();
+    last_update = millis();
+  }
+}
+
+void
+step_motor_state()
+{
+  static int n{0};
+  static int dir{0};
 
   if (0 == dir) {
     analogWrite(MOTOR_ENABLE_PIN, n++);
@@ -89,4 +110,6 @@ loop()
       digitalWrite(MOTOR_IN2_PIN, HIGH);
     }
   }
+
+  get_g_display()->update(n / 28);
 }
