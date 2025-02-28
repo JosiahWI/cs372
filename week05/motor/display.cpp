@@ -23,6 +23,9 @@ CS372SevenSegment::CS372SevenSegment(pin_t const* pins)
 {
   std::memcpy(this->display_pins.data(), pins,
               this->display_pins.size() * sizeof(pin_t));
+  for (pin_t pin : this->display_pins) {
+    pinMode(pin, OUTPUT);
+  }
   this->update(0);
 }
 
