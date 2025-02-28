@@ -5,13 +5,12 @@
 #include <Arduino.h>
 
 #include <array>
-#include <cmath>
 
 static CS372Debounce*     get_g_button1();
 static CS372Debounce*     get_g_button2();
 static CS372SevenSegment* get_g_display();
 static void               loop_motor();
-static void               step_motor_state();
+static int                step_motor_state();
 
 namespace {
   constexpr pin_t BUTTON1_PIN{14};
@@ -20,7 +19,6 @@ namespace {
   constexpr pin_t MOTOR_ENABLE_PIN{12};
   constexpr pin_t MOTOR_IN1_PIN{10};
   constexpr pin_t MOTOR_IN2_PIN{11};
-  constexpr int   DELAY{10};
 } // end anonymous namespace
 
 
@@ -83,34 +81,50 @@ void
 loop_motor()
 {
   static auto last_update{millis()};
+  static auto hold{0};
 
-  if (millis() - last_update > DELAY) {
-    step_motor_state();
-    last_update = millis();
+  if (hold) {
+    if (millis() - last_update > 5000) {
+      step_motor_state();
+      hold = 0;
+    }
+  } else {
+    if (millis() - last_update > 20) {
+      step_motor_state();
+      last_update = millis();
+    }
   }
 }
 
-void
+int
 step_motor_state()
 {
   static int n{0};
-  static int dir{0};
+  static int accel{1};
+  static int rotation_state{0};
 
-  if (0 == dir) {
-    analogWrite(MOTOR_ENABLE_PIN, std::abs(n++));
+  get_g_display()->update(n / 26);
+
+  if (1 == accel) {
+    analogWrite(MOTOR_ENABLE_PIN, n++);
     if (255 == n) {
-      dir = 1;
-      digitalWrite(MOTOR_IN1_PIN, HIGH);
-      digitalWrite(MOTOR_IN2_PIN, LOW);
+      accel = 0;
+      return 1;
     }
   } else {
-    analogWrite(MOTOR_ENABLE_PIN, std::abs(n--));
-    if (-255 == n) {
-      dir = 0;
-      digitalWrite(MOTOR_IN1_PIN, LOW);
-      digitalWrite(MOTOR_IN2_PIN, HIGH);
+    analogWrite(MOTOR_ENABLE_PIN, n--);
+    if (0 == n) {
+      accel = 1;
+      if (0 == rotation_state) {
+        digitalWrite(MOTOR_IN1_PIN, LOW);
+        digitalWrite(MOTOR_IN2_PIN, HIGH);
+        rotation_state = 1;
+      } else {
+        digitalWrite(MOTOR_IN1_PIN, HIGH);
+        digitalWrite(MOTOR_IN2_PIN, LOW);
+        rotation_state = 0;
+      }
     }
   }
-
-  get_g_display()->update(std::abs(n) / 26);
+  return 0;
 }
