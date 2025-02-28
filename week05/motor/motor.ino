@@ -5,6 +5,7 @@
 #include <Arduino.h>
 
 #include <array>
+#include <cmath>
 
 static CS372Debounce*     get_g_button1();
 static CS372Debounce*     get_g_button2();
@@ -96,20 +97,20 @@ step_motor_state()
   static int dir{0};
 
   if (0 == dir) {
-    analogWrite(MOTOR_ENABLE_PIN, n++);
+    analogWrite(MOTOR_ENABLE_PIN, std::abs(n++));
     if (255 == n) {
       dir = 1;
       digitalWrite(MOTOR_IN1_PIN, HIGH);
       digitalWrite(MOTOR_IN2_PIN, LOW);
     }
   } else {
-    analogWrite(MOTOR_ENABLE_PIN, n--);
-    if (0 == n) {
+    analogWrite(MOTOR_ENABLE_PIN, std::abs(n--));
+    if (-255 == n) {
       dir = 0;
       digitalWrite(MOTOR_IN1_PIN, LOW);
       digitalWrite(MOTOR_IN2_PIN, HIGH);
     }
   }
 
-  get_g_display()->update(n / 26);
+  get_g_display()->update(std::abs(n) / 26);
 }
