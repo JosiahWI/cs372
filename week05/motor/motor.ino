@@ -29,8 +29,8 @@ setup()
   pinMode(MOTOR_ENABLE_PIN, OUTPUT);
   pinMode(MOTOR_IN1_PIN, OUTPUT);
   pinMode(MOTOR_IN2_PIN, OUTPUT);
-  digitalWrite(MOTOR_IN1_PIN, HIGH);
-  digitalWrite(MOTOR_IN2_PIN, LOW);
+  digitalWrite(MOTOR_IN1_PIN, LOW);
+  digitalWrite(MOTOR_IN2_PIN, HIGH);
 }
 
 CS372Debounce*
@@ -57,17 +57,36 @@ get_g_display()
 void
 loop()
 {
+  static int n{0};
+  static int dir{0};
+
   auto* button1{get_g_button1()};
   button1->update();
   if (button1->pressed()) {
-    get_g_display()->update(6);
     digitalWrite(MOTOR_ENABLE_PIN, HIGH);
   }
 
   auto* button2{get_g_button2()};
   button2->update();
   if (button2->pressed()) {
-    get_g_display()->update(9);
     digitalWrite(MOTOR_ENABLE_PIN, LOW);
+  }
+
+  get_g_display()->update(n / 18);
+
+  if (0 == dir) {
+    analogWrite(MOTOR_ENABLE_PIN, n++);
+    if (255 == n) {
+      dir = 1;
+      digitalWrite(MOTOR_IN1_PIN, HIGH);
+      digitalWrite(MOTOR_IN2_PIN, LOW);
+    }
+  } else {
+    analogWrite(MOTOR_ENABLE_PIN, n--);
+    if (0 == n) {
+      dir = 0;
+      digitalWrite(MOTOR_IN1_PIN, LOW);
+      digitalWrite(MOTOR_IN2_PIN, HIGH);
+    }
   }
 }
