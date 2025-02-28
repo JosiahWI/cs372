@@ -83,16 +83,10 @@ loop_motor()
   static auto last_update{millis()};
   static auto hold{0};
 
-  if (hold) {
-    if (millis() - last_update > 5000) {
-      step_motor_state();
-      hold = 0;
-    }
-  } else {
-    if (millis() - last_update > 20) {
-      step_motor_state();
-      last_update = millis();
-    }
+  if (hold && millis() - last_update > 5000) {
+    hold = step_motor_state();
+  } else if (millis() - last_update > 20) {
+    hold = step_motor_state();
   }
 }
 
