@@ -111,5 +111,5 @@ step_motor_state()
     }
   }
 
-  get_g_display()->update(n / 28);
+  get_g_display()->update(n / 26);
 }
