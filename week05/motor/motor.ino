@@ -81,12 +81,14 @@ void
 loop_motor()
 {
   static auto last_update{millis()};
-  static auto hold{0};
+  static auto _hold{0};
 
-  if (hold && millis() - last_update > 5000) {
-    hold = step_motor_state();
-  } else if (millis() - last_update > 20) {
-    hold = step_motor_state();
+  if (_hold && (millis() - last_update > 50000)) {
+    _hold = step_motor_state();
+    last_update = millis();
+  } else if (!_hold && (millis() - last_update > 20)) {
+    _hold = step_motor_state();
+    last_update = millis();
   }
 }
 
