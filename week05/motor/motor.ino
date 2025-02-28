@@ -57,18 +57,16 @@ get_g_display()
 void
 loop()
 {
-  static int n{0};
-
   auto* button1{get_g_button1()};
   button1->update();
-  if (button1->pressed() && n < 9) {
+  if (button1->pressed()) {
     get_g_display()->update(6);
     digitalWrite(MOTOR_ENABLE_PIN, HIGH);
   }
 
   auto* button2{get_g_button2()};
   button2->update();
-  if (button2->pressed() && n > 0) {
+  if (button2->pressed()) {
     get_g_display()->update(9);
     digitalWrite(MOTOR_ENABLE_PIN, LOW);
   }
