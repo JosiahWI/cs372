@@ -10,8 +10,9 @@ static void show_resistance(int r);
 
 namespace {
   constexpr pin_t POT_SENSOR_PIN{16};
-  constexpr int       INPUT_MV{3300};
-  constexpr int       MAX_OUTPUT_MV{3000};
+  constexpr long long INPUT_MV{3440};
+  constexpr long long MAX_INPUT_PIN_MV{3300};
+  constexpr long long MAX_OUTPUT_MV{3000};
   constexpr long long R1_MOHM{2200000};
   constexpr long long POT_TOTAL_MOHM{10000000};
   constexpr int       LCD_OHM_SYMBOL{0b11110100};
@@ -42,10 +43,10 @@ loop()
 int
 read_resistance()
 {
-  int const       level{static_cast<int>(analogRead(POT_SENSOR_PIN))};
-  int const       mvolts{1000 * level * MAX_OUTPUT_MV / 1023};
+  long long const level{static_cast<int>(analogRead(POT_SENSOR_PIN))};
+  long long const mvolts{level * MAX_INPUT_PIN_MV / 1023};
   long long const mohms{
-    (INPUT_MV - mvolts) * (POT_TOTAL_MOHM + R1_MOHM) - (INPUT_MV * R1_MOHM)};
+    (INPUT_MV - mvolts) * (POT_TOTAL_MOHM + R1_MOHM) / INPUT_MV - R1_MOHM};
   return static_cast<int>(mohms / 1000);
 }
 
