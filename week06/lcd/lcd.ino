@@ -55,6 +55,7 @@ show_resistance(int r)
 {
   lcd.write(LCD_COMMAND_MODE);
   lcd.write(LCD_COMMAND_CLR);
+  lcd.write("R: ");
   lcd.print(r);
   lcd.write(LCD_OHM_SYMBOL);
 }
