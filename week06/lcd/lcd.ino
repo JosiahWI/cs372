@@ -5,8 +5,8 @@
 #define lcd Serial2
 
 static void wait_for_serial_ready(serial_t& serial);
-static long read_resistance();
-static void show_resistance(long r);
+static int  read_resistance();
+static void show_resistance(int r);
 
 namespace {
   constexpr pin_t POT_SENSOR_PIN{16};
@@ -39,19 +39,19 @@ loop()
   show_resistance(read_resistance());
 }
 
-long
+int
 read_resistance()
 {
-  int const  level{static_cast<int>(analogRead(POT_SENSOR_PIN))};
-  int const  mvolts{1000 * level * MAX_OUTPUT_MV / 1023};
-  long const mohms{static_cast<long>(
+  int const       level{static_cast<int>(analogRead(POT_SENSOR_PIN))};
+  int const       mvolts{1000 * level * MAX_OUTPUT_MV / 1023};
+  long long const mohms{
     (mvolts * (POT_TOTAL_MOHM + R1_MOHM) - INPUT_MV * R1_MOHM) /
-    (INPUT_MV - mvolts))};
-  return mohms;
+    (INPUT_MV - mvolts)};
+  return static_cast<int>(mohms / 1000);
 }
 
 void
-show_resistance(long r)
+show_resistance(int r)
 {
   lcd.write(LCD_COMMAND_MODE);
   lcd.write(LCD_COMMAND_CLR);
