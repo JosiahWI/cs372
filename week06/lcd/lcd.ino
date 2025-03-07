@@ -45,8 +45,7 @@ read_resistance()
   int const       level{static_cast<int>(analogRead(POT_SENSOR_PIN))};
   int const       mvolts{1000 * level * MAX_OUTPUT_MV / 1023};
   long long const mohms{
-    (mvolts * (POT_TOTAL_MOHM + R1_MOHM) - INPUT_MV * R1_MOHM) /
-    (INPUT_MV - mvolts)};
+    (INPUT_MV - mvolts) * (POT_TOTAL_MOHM + R1_MOHM) - (INPUT_MV * R1_MOHM)};
   return static_cast<int>(mohms / 1000);
 }
 
