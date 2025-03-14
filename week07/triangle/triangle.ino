@@ -1,13 +1,11 @@
 #pragma GCC optimize "-O3"
 
 #include "DACOscillate.h"
-#include "types.h"
 
 #include <array>
 #include <cassert>
 #include <cstdint>
 #include <limits>
-#include <vector>
 
 template <int N>
 constexpr std::array<DACChunk, N>
