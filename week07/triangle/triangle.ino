@@ -9,7 +9,7 @@
 static std::vector<DACChunk> chunk_range(int n);
 
 namespace {
-  auto voltage_line{chunk_range(4)};
+  auto voltage_line{chunk_range(256)};
   auto g_DAC_pump{DACOscillate{voltage_line.begin(), voltage_line.end()}};
 } // end anonymous namespace
 
