@@ -1,3 +1,5 @@
+#pragma GCC optimize "-O3"
+
 #include "DACOscillate.h"
 #include "types.h"
 
