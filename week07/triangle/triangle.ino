@@ -1,39 +1,33 @@
+#include "DACOscillate.h"
 #include "types.h"
 
-#include <SPI.h>
-
+#include <cassert>
 #include <cstdint>
+#include <limits>
+#include <vector>
+
+static std::vector<DACChunk> chunk_range(int n);
 
 namespace {
-  constexpr pin_t SS_PIN{10};
-  constexpr pin_t MOSI_PIN{11};
-  constexpr pin_t SCLK_PIN{13};
+  auto voltage_line{chunk_range(4)};
+  auto g_DAC_pump{DACOscillate{voltage_line.begin(), voltage_line.end()}};
 } // end anonymous namespace
 
-struct SPIDataChunk
-{
-  std::uint8_t lo_byte;
-  std::uint8_t hi_byte;
-};
-
 void setup() {
-  // Skipped pinMode of 11 and 13 for now.
-  pinMode(SS_PIN, OUTPUT);
-  pinMode(MOSI_PIN, OUTPUT);
-  pinMode(SCLK_PIN, OUTPUT);
-
-  digitalWrite(SS_PIN, HIGH);
-
-  SPI.begin();
-  SPI.setDataMode(SPI_MODE0);
-  SPI.setBitOrder(MSBFIRST);
-
-  // For testing...
-  digitalWrite(SS_PIN, LOW);
-  SPI.transfer(0x38);
-  SPI.transfer(0x00);
-  digitalWrite(SS_PIN, HIGH);
 }
 
 void loop() {
+  g_DAC_pump.step();
+}
+
+std::vector<DACChunk>
+chunk_range(int n) {
+  assert(n <= std::numeric_limits<std::uint8_t>::max() + 1);
+
+  std::vector<DACChunk> result;
+  result.resize(n);
+  for (int i{0}; i < n; ++i) {
+    result[i] = DACChunk{static_cast<std::uint8_t>(i)};
+  }
+  return result;
 }

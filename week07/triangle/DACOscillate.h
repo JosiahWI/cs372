@@ -1,9 +1,13 @@
 #ifndef DAC_OSCILLATE_H_INCLUDED
 #define DAC_OSCILLATE_H_INCLUDED
 
+#include "types.h"
+
+#include <Arduino.h>
+#include <SPI.h>
+
 #include <cassert>
 #include <cstdint>
-#include <iostream> // TODO remove
 #include <iterator>
 
 class DACChunk
@@ -11,12 +15,13 @@ class DACChunk
 public:
   constexpr DACChunk() : SPI_bytes{0, 0}
   {
-  };
+  }
+
   constexpr DACChunk(std::uint8_t voltage_level)
     : SPI_bytes{static_cast<std::uint8_t>((voltage_level & 0x0f) << 4),
                 static_cast<std::uint8_t>(0x30 | (voltage_level >> 4))}
   {
-  };
+  }
 
   std::uint8_t
   get_low_byte() const
@@ -46,12 +51,21 @@ public:
     : start{start}, end{end}, it{start}
   {
     assert(start != end);
+
+    pinMode(SS_PIN, OUTPUT);
+    pinMode(MOSI_PIN, OUTPUT);
+    pinMode(SCLK_PIN, OUTPUT);
+
+    digitalWrite(SS_PIN, HIGH);
+
+    SPI.begin();
+    SPI.setDataMode(SPI_MODE0);
+    SPI.setBitOrder(MSBFIRST);
   }
 
   void step()
   {
-    std::cout << static_cast<int>(this->it->get_high_byte()) << ' '
-              << static_cast<int>(this->it->get_low_byte()) << '\n';
+    this->send(*this->it);
     std::advance(this->it, this->iterator_velocity);
 
     if (this->it == this->end) {
@@ -71,10 +85,23 @@ public:
   }
 
 private:
+  void
+  send(DACChunk const& chunk)
+  {
+    digitalWrite(SS_PIN, LOW);
+    SPI.transfer(chunk.get_high_byte());
+    SPI.transfer(chunk.get_low_byte());
+    digitalWrite(SS_PIN, HIGH);
+  }
+
   BidiIt start;
   BidiIt end;
   BidiIt it;
   int    iterator_velocity{1};
+
+  static constexpr pin_t SS_PIN{10};
+  static constexpr pin_t MOSI_PIN{11};
+  static constexpr pin_t SCLK_PIN{13};
 };
 
 #endif // DAC_OSCILLATE_H_INCLUDED
