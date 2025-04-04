@@ -102,6 +102,9 @@ ParallelSRAM::do_write(byte data)
   }
   // Write must be enabled only after value has been set on data bus.
   digitalWrite(this->write_enable_pin, LOW);
+  // We don't strictly have to do this here since it will happen when we
+  // transition to High-Z, but you'd expect it to be here, so here it is.
+  digitalWrite(this->write_enable_pin, HIGH);
 }
 
 void
