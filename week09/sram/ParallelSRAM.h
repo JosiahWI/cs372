@@ -5,6 +5,8 @@
 
 #include <Arduino.h>
 
+#define SAFETY_CHECK_HIGH_Z
+
 class ParallelSRAM {
 public:
   ParallelSRAM(int* data_pins, int* addr_pins, int write_enable_pin,
@@ -28,9 +30,14 @@ private:
   std::array<int, addr_bus_width> addr_pins;
   int                             write_enable_pin;
   int                             output_enable_pin;
+#ifdef SAFETY_CHECK_HIGH_Z
+  bool is_high_z{false};
+#endif
 
-  void          write_addr(byte addr);
+  void          enable_highz();
   void          enable_read();
+  void          do_write(byte data);
+  void          write_addr(byte addr);
   unsigned long read_ulong();
 };
 
