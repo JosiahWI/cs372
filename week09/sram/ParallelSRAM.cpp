@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 
-#include <cstring>
 #include <bitset>
 
 ParallelSRAM::ParallelSRAM(int* _data_pins, int* _addr_pins,
