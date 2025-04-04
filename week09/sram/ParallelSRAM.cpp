@@ -5,12 +5,22 @@
 #include <cstring>
 #include <bitset>
 
-ParallelSRAM::ParallelSRAM(int* data_pins, int* addr_pins, int write_enable_pin,
-                           int output_enable_pin)
+ParallelSRAM::ParallelSRAM(int* _data_pins, int* _addr_pins,
+                           int write_enable_pin, int output_enable_pin)
     : write_enable_pin{write_enable_pin}, output_enable_pin{output_enable_pin}
 {
-  std::memcpy(this->data_pins.data(), data_pins, this->data_pins.size());
-  std::memcpy(this->addr_pins.data(), addr_pins, this->data_pins.size());
+
+  using data_pin_array_size_t = decltype(this->data_pins)::size_type;
+  using addr_pin_array_size_t = decltype(this->data_pins)::size_type;
+
+  // Apparently memcpying into this->data_pins.data() leaves it uninitialized!?
+  for (data_pin_array_size_t i = 0; i < this->data_pins.size(); ++i) {
+    this->data_pins[i] = _data_pins[i];
+  }
+
+  for (addr_pin_array_size_t i = 0; i < this->addr_pins.size(); ++i) {
+    this->addr_pins[i] = _addr_pins[i];
+  }
 
   for (int data_pin : this->data_pins) {
     pinMode(data_pin, INPUT);
