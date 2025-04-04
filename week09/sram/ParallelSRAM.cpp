@@ -64,9 +64,8 @@ ParallelSRAM::enable_read()
   if (!this->is_high_z) {
     return;
   }
-#endif
-
   this->is_high_z = false;
+#endif
 
   for (int data_pin : this->data_pins) {
     pinMode(data_pin, INPUT);
@@ -116,7 +115,7 @@ unsigned long
 ParallelSRAM::read_ulong()
 {
 #ifdef SAFETY_CHECK_HIGH_Z
-  if (!this->is_high_z) {
+  if (this->is_high_z) {
     return -1;
   }
 #endif
