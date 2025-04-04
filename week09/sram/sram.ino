@@ -20,7 +20,7 @@ loop()
   static bool once{false};
   if (!once) {
     once = true;
-    my_device->writeSRAM(0, 0xff);
+    my_device->writeSRAM(5, 0xff);
 
     byte val = my_device->readSRAM(0);
     Serial.println(val);
