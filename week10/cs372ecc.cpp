@@ -1,8 +1,17 @@
 #include "cs372ecc.h"
 
-#include <bit>
 #include <bitset>
 #include <type_traits>
+
+/* This function is provided by the C++20 standard library, but it seems
+ * Arduino does not have it.
+ */
+template <typename T>
+std::uint8_t
+popcount(T data)
+{
+  return std::bitset<sizeof(T)>{data}.count();
+}
 
 template <typename T>
 std::uint8_t
