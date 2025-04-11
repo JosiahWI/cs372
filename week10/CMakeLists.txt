@@ -16,3 +16,8 @@ find_package(Catch2 REQUIRED)
 
 add_executable(test_ecc test_ecc.cpp)
 target_link_libraries(test_ecc PRIVATE Catch2::Catch2 ecc::ecc)
+
+add_custom_target(
+  format clang-format -i *.cpp *.h
+  WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+)
