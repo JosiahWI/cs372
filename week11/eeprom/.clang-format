@@ -1,0 +1,38 @@
+# Style enforcement.
+IndentWidth: 2
+InsertBraces: true
+ColumnLimit: 80
+
+# Good practice enforcement.
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+
+# Aesthetic choice.
+AlignAfterOpenBracket: Align
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignEscapedNewlines: Left
+AlignOperands: AlignAfterOperator
+AllowAllArgumentsOnNextLine: true
+AllowShortBlocksOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: All
+BraceWrapping:
+  AfterControlStatement: Never
+  AfterEnum: true
+  AfterFunction: true
+  AfterStruct: true
+BreakBeforeBraces: Custom
+BreakStringLiterals: true
+IndentGotoLabels: false
+PointerAlignment: Left
+QualifierAlignment: Right
+RemoveParentheses: ReturnStatement
+SeparateDefinitionBlocks: Always
+# We do want them sorted, but we want them blocked by include type.
+SortIncludes: Never
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
