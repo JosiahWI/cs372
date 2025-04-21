@@ -9,7 +9,7 @@
 #include <string>
 
 namespace {
-constexpr int chip_address{0xa0};
+constexpr int chip_address{0x50};
 } // end anonymous namespace
 
 CS372EEPROM::CS372EEPROM()
