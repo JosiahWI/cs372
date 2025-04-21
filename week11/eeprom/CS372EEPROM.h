@@ -24,8 +24,18 @@ public:
    * Write a value to the given address.
    *
    * There must be at least 5 milliseconds between each call to this method.
+   *
+   * @param addr Address (0-255) to write.
+   * @param val Value to write.
    */
-  void         write_eeprom(std::uint8_t addr, std::uint8_t val);
+  void write_eeprom(std::uint8_t addr, std::uint8_t val);
+
+  /** Read the value at the given address.
+   *
+   * @param addr Address to read.
+   * @return Returns the value read from that address, or 0xff if the EEPROM
+   * did not respond.
+   */
   std::uint8_t read_eeprom(std::uint8_t addr);
 };
 
