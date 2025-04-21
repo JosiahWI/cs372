@@ -10,14 +10,14 @@ template <typename T>
 std::uint8_t
 popcount(T data)
 {
-  return std::bitset<sizeof(T)>{data}.count();
+  return std::bitset<8 * sizeof(T)>{data}.count();
 }
 
 template <typename T>
 std::uint8_t
 gen_parity_impl(T data)
 {
-  return std::popcount(static_cast<std::make_unsigned_t<T>>(data)) % 2;
+  return popcount(static_cast<std::make_unsigned_t<T>>(data)) % 2;
 }
 
 template <typename T>
