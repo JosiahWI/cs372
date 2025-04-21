@@ -25,6 +25,10 @@ CS372EEPROM::~CS372EEPROM()
 void
 CS372EEPROM::write_eeprom(std::uint8_t addr, std::uint8_t val)
 {
+  Wire.beginTransmission(chip_address);
+  Wire.write(addr);
+  Wire.write(val);
+  Wire.endTransmission();
 }
 
 std::uint8_t

@@ -20,6 +20,11 @@ public:
 
   ~CS372EEPROM();
 
+  /**
+   * Write a value to the given address.
+   *
+   * There must be at least 5 milliseconds between each call to this method.
+   */
   void         write_eeprom(std::uint8_t addr, std::uint8_t val);
   std::uint8_t read_eeprom(std::uint8_t addr);
 };
