@@ -26,6 +26,7 @@ loop()
       ++num_corrected;
       delay(5);
       eeprom.write_eeprom(next_addr, (corrected_val & 0xff00) >> 8);
+      delay(5);
       eeprom.write_eeprom(next_addr + 1, (corrected_val & 0x00ff));
     }
     next_addr += 2;
