@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 
+#include <array>
 #include <csignal>
 
 static IntervalTimer* get_g_step_timer();
@@ -14,10 +15,15 @@ constexpr pin_t STEPPER_PINS[]{22, 21, 19, 20};
 using stepper_state_t = dig_t[4];
 constexpr stepper_state_t STATE_ORDER[]{
     { LOW, HIGH,  LOW,  LOW},
+    { LOW, HIGH,  LOW, HIGH},
     { LOW,  LOW,  LOW, HIGH},
+    {HIGH,  LOW,  LOW, HIGH},
     {HIGH,  LOW,  LOW,  LOW},
-    { LOW,  LOW, HIGH, HIGH}
+    {HIGH,  LOW, HIGH,  LOW},
+    { LOW,  LOW, HIGH,  LOW},
+    { LOW, HIGH, HIGH,  LOW}
 };
+constexpr int total_states_per_rev{sizeof(STATE_ORDER) / sizeof(STATE_ORDER[0])};
 
 std::sig_atomic_t volatile g_motor_step_interval_done;
 } // end anonymous namespace
@@ -58,7 +64,7 @@ loop()
       digitalWrite(STEPPER_PINS[i], STATE_ORDER[stepper_state][i]);
     }
     ++stepper_state;
-    if (4 == stepper_state) {
+    if (total_states_per_rev == stepper_state) {
       stepper_state = 0;
     }
   }
